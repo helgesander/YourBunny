@@ -3,7 +3,6 @@ package ru.yourbunny.yourbunny.models;
 
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
-
 import java.util.UUID;
 
 @Entity
@@ -14,7 +13,10 @@ public class User {
     private UUID user_id;
     @Column(name = "username")
     @NotNull
-    private String firstName;
+    private String username;
+    @Column (name = "password")
+    @NotNull
+    private String password;
     @Column(name = "email")
     @NotNull
     private String email;
@@ -24,6 +26,14 @@ public class User {
     @Column(name = "role")
     @NotNull
     private String role;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "users_roles",
+//            joinColumns = @JoinColumn(
+//                    name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "role_id", referencedColumnName = "id"))
+//    private Collection<Role> roles;
 
     public UUID getUser_id() {
         return user_id;
@@ -33,12 +43,20 @@ public class User {
         this.user_id = user_id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setFirstName(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

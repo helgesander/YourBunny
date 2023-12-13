@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
     @Autowired
     private ChatRepository chatRepository;
