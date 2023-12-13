@@ -10,10 +10,12 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS profiles (
     profile_id UUID PRIMARY KEY,
     user_id UUID NOT NULL,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
     about_me TEXT,
     gender VARCHAR(10) CHECK ( gender in ('male', 'female') ) NOT NULL ,
     age INT CHECK ( age > 0 ) NOT NULL,
-    date_of_born DATE NOT NULL,
+    date_of_birth DATE NOT NULL,
     hobbies TEXT,
     avatar BYTEA,
     FOREIGN KEY (user_id) REFERENCES users(user_id)

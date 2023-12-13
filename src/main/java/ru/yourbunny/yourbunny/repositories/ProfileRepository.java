@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {
-//    List<Profile> findUsersByInterestsIn(List<String> interests);
+
 }
