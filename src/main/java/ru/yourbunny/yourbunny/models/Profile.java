@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Date;
 import java.util.UUID;
@@ -21,12 +20,10 @@ public class Profile {
     private String aboutMe;
     @Column(name = "age")
     private String age;
-    @Column(name = "date_of_born")
+    @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    @NotNull
-    private Date dateOfBorn;
+    private Date dateOfBirth;
     @Column(name = "gender")
-    @NotNull
     private String gender;
     @Column (name = "hobbies")
     private String hobbies;
