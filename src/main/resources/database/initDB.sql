@@ -4,8 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR NOT NULL,
     role_id INT NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    phone VARCHAR(11) NOT NULL UNIQUE,
-    role VARCHAR(10) NOT NULL
+    phone VARCHAR(11) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS profiles (
@@ -45,7 +44,7 @@ CREATE TABLE IF NOT EXISTS chats (
 
 CREATE TABLE IF NOT EXISTS users_chats (
     user_id UUID REFERENCES users(user_id),
-    chat_id INT REFERENCES chats(id),
+    chat_id INT REFERENCES chats(chat_id),
     PRIMARY KEY (user_id, chat_id)
 );
 
