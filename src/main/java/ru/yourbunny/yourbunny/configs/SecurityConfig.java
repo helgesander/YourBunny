@@ -8,21 +8,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import ru.yourbunny.yourbunny.security.AuthProviderImpl;
+import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final AuthProviderImpl authProvider;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public SecurityConfig(AuthProviderImpl authProvider) {
-        this.authProvider = authProvider;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider);
+        auth.userDetailsService(customUserDetailsService);
     }
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
