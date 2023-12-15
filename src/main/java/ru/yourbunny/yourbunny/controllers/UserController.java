@@ -13,10 +13,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
+
+    private final UserRepository userRepository;
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @GetMapping()
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -28,10 +33,10 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
-    @DeleteMapping("/user_id")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID user_id) {
-        if (userRepository.existsById(user_id)) {
-            userRepository.deleteById(user_id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
             return ResponseEntity.ok("User deleted successfully");
         }
         else {

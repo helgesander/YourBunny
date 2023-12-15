@@ -1,31 +1,49 @@
 package ru.yourbunny.yourbunny.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Table (name = "profiles")
+@Data
+@NoArgsConstructor
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID profileId;
+
     @Column(name = "about_me")
     private String aboutMe;
+
     @Column(name = "age")
-    private String age;
-    @Column(name = "date_of_born")
+    @NotBlank
+    @Min(value = 17)
+    private Long age;
+
+    @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    @NotNull
-    private Date dateOfBorn;
+    @NotBlank
+    private Date dateOfBirth;
+
     @Column(name = "gender")
-    @NotNull
+    @NotBlank
     private String gender;
+
     @Column (name = "hobbies")
     private String hobbies;
+
     @Column (name = "avatar")
     private byte[] avatar;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User user;
 }

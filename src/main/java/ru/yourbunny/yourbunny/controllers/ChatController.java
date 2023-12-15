@@ -3,24 +3,41 @@ package ru.yourbunny.yourbunny.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
+import ru.yourbunny.yourbunny.exceptions.NotFoundException;
 import ru.yourbunny.yourbunny.models.Chat;
+import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.repositories.ChatRepository;
+import ru.yourbunny.yourbunny.security.SiteUserDetails;
+import ru.yourbunny.yourbunny.services.ChatService;
+import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
-    @Autowired
-    private ChatRepository chatRepository;
+    private ChatService chatService;
+    private CustomUserDetailsService userService;
     @GetMapping("/{chat_id}")
-    public ResponseEntity<Chat> getChat(@PathVariable UUID chat_id) {
-        Optional<Chat> chat = chatRepository.findById(chat_id);
-        return chat.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    public Chat getChat(@PathVariable UUID chat_id) {
+        return chatService.getById(chat_id);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> addChat(@RequestParam String username) {
+        Chat chat = new Chat();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SiteUserDetails siteUserDetails = (SiteUserDetails)authentication.getPrincipal();
+        User currentUser = siteUserDetails.getUser();
+        User secondUser = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        chat.setFirstUserId(currentUser.getUserId());
+        chat.setSecondUserId(secondUser.getUserId());
+        chatService.save(chat);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
