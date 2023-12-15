@@ -1,4 +1,4 @@
-package ru.yourbunny.yourbunny.utils;
+package ru.yourbunny.yourbunny.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

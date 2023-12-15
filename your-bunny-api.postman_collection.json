@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "94f3c2f9-8e08-44dd-90d7-7cc988938a31",
+		"name": "your-bunny-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31822390"
+	},
+	"item": [
+		{
+			"name": "get token for user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"russian_sigma\",\r\n    \"password\": \"kamen\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/get-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"get-token"
+					]
+				},
+				"description": "Return token if user is exist in database"
+			},
+			"response": []
+		},
+		{
+			"name": "registration new user",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "admin panell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"description": "Work with admin panel (available for admin role)"
+			},
+			"response": []
+		}
+	]
+}

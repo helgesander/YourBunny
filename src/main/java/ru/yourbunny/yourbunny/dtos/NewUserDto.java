@@ -1,2 +1,15 @@
-package ru.yourbunny.yourbunny.dtos;public class NewUserDto {
+package ru.yourbunny.yourbunny.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+public class NewUserDto {
+    private UUID id;
+    private String username;
+    private String email;
+    private String token;
 }

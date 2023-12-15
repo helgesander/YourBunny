@@ -17,7 +17,8 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID user_id;
+    @Column (name = "user_id")
+    private UUID userId;
     @Column(name = "username")
     private String username;
     @Column (name = "password")
@@ -26,6 +27,8 @@ public class User {
     private String email;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "enabled")
+    private boolean isEnabled;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     @JsonIgnore
     private Profile profile;

@@ -1,17 +1,14 @@
 package ru.yourbunny.yourbunny.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import ru.yourbunny.yourbunny.models.User;
 
 import java.util.Collection;
 
+@AllArgsConstructor
 public class SiteUserDetails implements org.springframework.security.core.userdetails.UserDetails {
     private final User user;
-
-    public SiteUserDetails(User user) {
-        this.user = user;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -51,4 +48,5 @@ public class SiteUserDetails implements org.springframework.security.core.userde
     public User getUser() {
         return this.user;
     }
+    
 }

@@ -1,42 +1,54 @@
 package ru.yourbunny.yourbunny.controllers;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.yourbunny.yourbunny.dtos.ProfileDto;
 import ru.yourbunny.yourbunny.models.Profile;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.security.SiteUserDetails;
 import ru.yourbunny.yourbunny.services.ProfileService;
-import ru.yourbunny.yourbunny.utils.ProfileErrorResponse;
-import ru.yourbunny.yourbunny.utils.ProfileNotFoundException;
+import ru.yourbunny.yourbunny.exceptions.ProfileErrorResponse;
+import ru.yourbunny.yourbunny.exceptions.NotFoundException;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/home")
 public class ProfileController {
-    private final ProfileService profileService;
 
-    @Autowired
-    public ProfileController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
+    private ProfileService profileService;
 
-    @GetMapping()
-    public Profile getProfile() {
+    private User getUserFromSecurityContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SiteUserDetails siteUserDetails = (SiteUserDetails)authentication.getPrincipal();
-        User currentUser = siteUserDetails.getUser();
-        return currentUser.getProfile();
+        return siteUserDetails.getUser();
+    }
+    @GetMapping()
+    public Profile getProfile() {
+        User user = getUserFromSecurityContext();
+        return user.getProfile();
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> addProfile(@RequestBody ProfileDto profileDto) {
+        User user = getUserFromSecurityContext();
+        Profile profile = new Profile();
+        profile.setAge(profileDto.getAge());
+        profile.setAboutMe(profileDto.getAboutMe());
+        profile.setDateOfBirth(profileDto.getDateOfBirth());
+        profile.setAvatar(profileDto.getAvatar());
+        profile.setGender(profileDto.getGender());
+        profile.setHobbies(profileDto.getHobbies());
+        profileService.save(profile);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @ExceptionHandler
-    private ResponseEntity<ProfileErrorResponse> handleException(ProfileNotFoundException e) {
+    private ResponseEntity<ProfileErrorResponse> handleException(NotFoundException e) {
         ProfileErrorResponse response = new ProfileErrorResponse(
                 "Profile with this id was not found",
                 System.currentTimeMillis()

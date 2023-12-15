@@ -2,18 +2,17 @@ package ru.yourbunny.yourbunny.services;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.yourbunny.yourbunny.models.Role;
+import ru.yourbunny.yourbunny.dtos.RegistrationDto;
+import ru.yourbunny.yourbunny.exceptions.UserAlreadyExistException;
 import ru.yourbunny.yourbunny.models.User;
-import ru.yourbunny.yourbunny.repositories.RoleRepository;
 import ru.yourbunny.yourbunny.repositories.UserRepository;
-import ru.yourbunny.yourbunny.security.SiteUserDetails;
-import ru.yourbunny.yourbunny.utils.RoleNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +20,11 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Setter
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private UserRepository userRepository;
+    private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
 
     public List<User> findAll() {
         return this.userRepository.findAll();
@@ -45,15 +46,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public void createNewUser(User user) {
-        Optional<Role> role =  roleRepository.findByName("USER");
-        if (role.isPresent()) {
-            user.setRoles(List.of(role.get()));
-            userRepository.save(user);
-        }
-        else {
-            throw new RoleNotFoundException();
-        }
+    public void createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException {
+        User user = userRepository.findByUsername(registrationDto.getUsername()).orElseThrow(() -> new UserAlreadyExistException("User already exist"));
+        user.setUsername(registrationDto.getUsername());
+        user.setEmail(registrationDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        user.setRoles(List.of(roleService.getUserRole()));
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 
 }

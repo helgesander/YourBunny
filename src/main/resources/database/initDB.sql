@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR NOT NULL,
     role_id INT NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    phone VARCHAR(11) NOT NULL UNIQUE
+    phone VARCHAR(11) NOT NULL UNIQUE,
+    enabled BOOLEAN CHECK ( enabled in (true, false) )
 );
 
 CREATE TABLE IF NOT EXISTS profiles (

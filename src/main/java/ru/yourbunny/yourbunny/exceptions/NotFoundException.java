@@ -8,12 +8,12 @@ import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProfileNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
     private final HttpStatus status = HttpStatus.NOT_FOUND;
     private String message;
     private Date timestamp;
 
-    public ProfileNotFoundException(String message) {
+    public NotFoundException(String message) {
         this.message = message;
         this.timestamp = new Date();
     }
