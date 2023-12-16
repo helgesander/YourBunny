@@ -1,6 +1,7 @@
 package ru.yourbunny.yourbunny.controllers;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,10 +15,9 @@ import ru.yourbunny.yourbunny.services.ProfileService;
 import ru.yourbunny.yourbunny.exceptions.ProfileErrorResponse;
 import ru.yourbunny.yourbunny.exceptions.NotFoundException;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/home")
+@Tag(name = "API профилей", description = "Взаимодействие с профилями пользователей (выдача рекомендаций и тд.)")
 public class ProfileController {
 
     private ProfileService profileService;

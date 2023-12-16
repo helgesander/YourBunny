@@ -17,7 +17,7 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
-    @Column (name = "message_text")
+    @Column (name = "message_text", nullable = false)
     private String messageText;
     @Column (name = "message_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

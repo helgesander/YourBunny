@@ -1,5 +1,6 @@
 package ru.yourbunny.yourbunny.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Панель администратора", description = "Управление, контроль, настройка, управление доступом")
 public class AdminController {
     @GetMapping()
     public String getAdminPanel() {

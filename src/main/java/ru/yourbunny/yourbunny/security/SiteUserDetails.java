@@ -1,13 +1,16 @@
 package ru.yourbunny.yourbunny.security;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import ru.yourbunny.yourbunny.models.User;
 
 import java.util.Collection;
 
+@Getter
 @AllArgsConstructor
 public class SiteUserDetails implements org.springframework.security.core.userdetails.UserDetails {
+    // Need to get data of user after authentication
     private final User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,9 +47,4 @@ public class SiteUserDetails implements org.springframework.security.core.userde
         return true;
     }
 
-    // Need to get data of user after authentication
-    public User getUser() {
-        return this.user;
-    }
-    
 }
