@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
+import ru.yourbunny.yourbunny.exceptions.EmailAlreadyExistException;
 import ru.yourbunny.yourbunny.exceptions.UserAlreadyExistException;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.repositories.UserRepository;
@@ -46,14 +47,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public void createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException {
+    public void createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException, EmailAlreadyExistException {
         User user = userRepository.findByUsername(registrationDto.getUsername()).orElseThrow(() -> new UserAlreadyExistException("User already exist"));
+//        if (this.getByEmail())
         user.setUsername(registrationDto.getUsername());
         user.setEmail(registrationDto.getEmail());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         user.setRoles(List.of(roleService.getUserRole()));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new EmailAlreadyExistException(email));
     }
 
 }
