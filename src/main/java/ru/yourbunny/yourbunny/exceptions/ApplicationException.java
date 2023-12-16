@@ -5,9 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ApplicationException extends RuntimeException {
+public class ApplicationException {
     private int status;
     private String message;
     private Date timestamp;

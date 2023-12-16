@@ -1,5 +1,6 @@
 package ru.yourbunny.yourbunny.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/chat")
+@Tag(name = "API чатов", description = "Диалог с другими пользователями")
 public class ChatController {
     private ChatService chatService;
     private CustomUserDetailsService userService;

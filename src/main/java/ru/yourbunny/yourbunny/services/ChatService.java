@@ -16,6 +16,7 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
+    @Transactional
     public Chat getById(UUID chatId) {
         return chatRepository.findById(chatId).orElse(null);
     }

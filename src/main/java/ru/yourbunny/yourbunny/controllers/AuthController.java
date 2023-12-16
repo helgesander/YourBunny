@@ -1,31 +1,23 @@
 package ru.yourbunny.yourbunny.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yourbunny.yourbunny.dtos.JwtRequest;
-import ru.yourbunny.yourbunny.dtos.JwtResponse;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
-import ru.yourbunny.yourbunny.exceptions.ApplicationException;
-import ru.yourbunny.yourbunny.security.SiteUserDetails;
 import ru.yourbunny.yourbunny.services.AuthService;
-import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
-import ru.yourbunny.yourbunny.utils.JwtTokenUtils;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "API авторизации", description = "Получение токена JWT при входе и решистрации на ресурсе")
 public class AuthController {
+    @Autowired
     private final AuthService authService;
 
     @PostMapping("/get-token")
