@@ -14,4 +14,6 @@ import java.util.UUID;
 public interface ProfileRepository extends JpaRepository<Profile, UUID> {
     @Query("SELECT p.user_id FROM profiles p WHERE p.profile_id = :profileId")
     User findUserByProfileId(@Param("profileId") UUID profileId);
+
+    Profile findByProfileId(UUID id);
 }

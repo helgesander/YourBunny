@@ -26,9 +26,4 @@ public class RoleService {
     public Role findByName(String name) {
         return roleRepository.findByName(name).get();
     }
-
-//    @Transactional
-//    public Role getDefaultRole() throws RoleNotFoundException {
-//        return roleRepository.findByName("USER").orElseThrow(() -> new RoleNotFoundException("USER"));
-//    }
 }

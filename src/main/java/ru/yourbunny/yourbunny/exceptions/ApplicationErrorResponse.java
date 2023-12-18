@@ -1,17 +1,16 @@
 package ru.yourbunny.yourbunny.exceptions;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
-public class ApplicationException {
+public class ApplicationErrorResponse {
     private int status;
     private String message;
     private Date timestamp;
 
-    public ApplicationException(int status, String message) {
+    public ApplicationErrorResponse(int status, String message) {
         this.status = status;
         this.message = message;
         this.timestamp = new Date();

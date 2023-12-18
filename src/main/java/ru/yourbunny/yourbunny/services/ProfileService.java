@@ -30,4 +30,9 @@ public class ProfileService {
         //TODO: fix recommendations
         return new ArrayList<Profile>();
     }
+
+    @Transactional
+    public List<Profile> findAll() {
+        return profileRepository.findAll();
+    }
 }

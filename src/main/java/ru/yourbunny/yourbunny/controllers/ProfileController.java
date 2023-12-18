@@ -8,15 +8,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.yourbunny.yourbunny.dtos.ProfileDto;
+import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
+import ru.yourbunny.yourbunny.exceptions.ProfileNotFoundException;
 import ru.yourbunny.yourbunny.models.Profile;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.security.SiteUserDetails;
 import ru.yourbunny.yourbunny.services.ProfileService;
-import ru.yourbunny.yourbunny.exceptions.ProfileErrorResponse;
-import ru.yourbunny.yourbunny.exceptions.NotFoundException;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("/profile")
 @Tag(name = "API профилей", description = "Взаимодействие с профилями пользователей (выдача рекомендаций и тд.)")
 public class ProfileController {
 
@@ -27,10 +29,11 @@ public class ProfileController {
         SiteUserDetails siteUserDetails = (SiteUserDetails)authentication.getPrincipal();
         return siteUserDetails.getUser();
     }
-//    @GetMapping()
-//    public Profile getProfile() {
-//        User user = getUserFromSecurityContext();
-//        return user.getProfile();
+//    @GetMapping("/{profileId}")
+//    public ProfileDto getProfile(@PathVariable UUID profileId) throws ProfileNotFoundException {
+//        User user = profileService.getUserByProfileId(profileId);
+//        Profile profile = profileService.findById(profileId);
+//        return new ProfileDto()
 //    }
 
     @PostMapping()
@@ -47,12 +50,8 @@ public class ProfileController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ProfileErrorResponse> handleException(NotFoundException e) {
-        ProfileErrorResponse response = new ProfileErrorResponse(
-                "Profile with this id was not found",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(ProfileNotFoundException.class)
+    private ResponseEntity<ApplicationErrorResponse> ProfileNotFoundHandleException(ProfileNotFoundException e) {
+        return new ResponseEntity<>(new ApplicationErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

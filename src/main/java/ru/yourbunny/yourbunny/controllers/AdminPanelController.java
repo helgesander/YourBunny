@@ -5,10 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yourbunny.yourbunny.dtos.ProfileDto;
 import ru.yourbunny.yourbunny.dtos.UserDto;
+import ru.yourbunny.yourbunny.models.Profile;
 import ru.yourbunny.yourbunny.models.User;
+import ru.yourbunny.yourbunny.repositories.RoleRepository;
 import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
+import ru.yourbunny.yourbunny.services.ProfileService;
+import ru.yourbunny.yourbunny.services.RoleService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,16 +25,24 @@ public class AdminPanelController {
 
     @Autowired
     private CustomUserDetailsService userService;
+    @Autowired
+    private ProfileService profileService;
 
-    @GetMapping()
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    @GetMapping("/users")
+    public List<UserDto> getAllUsers() {
+        List<User> users = userService.findAll();
+        List<UserDto> userDtos = new ArrayList();
+        for (User usr : users) {
+            userDtos.add(new UserDto(usr.getUserId(), usr.getUsername(), usr.getEmail(), usr.getPhone()));
+        }
+        return userDtos;
     }
 
     @GetMapping("/users/{user_id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID user_id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable UUID user_id) {
         User user = userService.findById(user_id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserDto userDto = new UserDto(user.getUserId(), user.getUsername(), user.getEmail(), user.getPhone());
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{userId}")
@@ -46,4 +60,22 @@ public class AdminPanelController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @GetMapping("/profiles")
+    public List<ProfileDto> getAllProfiles() {
+        List<Profile> profiles = profileService.findAll();
+        List<ProfileDto> profileDtos = new ArrayList<>();
+        for (Profile profile: profiles) {
+            User user = profile.getUser();
+            profileDtos.add(new ProfileDto(user.getUsername(), profile.getAboutMe(),
+                    profile.getAge(), profile.getDateOfBirth(), profile.getGender(),
+                    profile.getHobbies(), profile.getAvatar()));
+        }
+        return profileDtos;
+    }
+
+//    @GetMapping("/profiles/{username}")
+//    public ProfileDto getProfile(@PathVariable String username) {
+//
+//    }
 }

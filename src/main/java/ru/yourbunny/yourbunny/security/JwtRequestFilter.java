@@ -35,7 +35,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             boolean isExpired = false;
-//            username = jwtTokenUtils.getUsername(jwt);
             Claims claims = jwtTokenUtils.getAllClaimsFromToken(jwt);
             username = claims.getSubject();
             Date expiration = claims.getExpiration();
