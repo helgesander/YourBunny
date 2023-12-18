@@ -57,7 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public User findById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        Optional<User> user = userRepository.findById(id);
+        return user.get();
     }
 
     @Override
@@ -90,6 +91,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setEmail(registrationDto.getEmail());
             user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
             user.setRoles(List.of(roleService.findByName("ROLE_USER")));
+            user.setPhone(registrationDto.getPhone());
             user.setEnabled(true);
             userRepository.save(user);
         } else throw new UserAlreadyExistException(registrationDto.getUsername());

@@ -2,11 +2,13 @@ package ru.yourbunny.yourbunny.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.GrantedAuthority;
+import ru.yourbunny.yourbunny.exceptions.BadJwtTokenException;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -52,10 +54,14 @@ public class JwtTokenUtils {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
-                .verifyWith(decodedJwtSecret(secret))
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(decodedJwtSecret(secret))
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (MalformedJwtException e) {
+            throw new BadJwtTokenException();
+        }
     }
 }

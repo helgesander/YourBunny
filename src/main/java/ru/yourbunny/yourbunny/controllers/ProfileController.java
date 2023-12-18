@@ -27,11 +27,11 @@ public class ProfileController {
         SiteUserDetails siteUserDetails = (SiteUserDetails)authentication.getPrincipal();
         return siteUserDetails.getUser();
     }
-    @GetMapping()
-    public Profile getProfile() {
-        User user = getUserFromSecurityContext();
-        return user.getProfile();
-    }
+//    @GetMapping()
+//    public Profile getProfile() {
+//        User user = getUserFromSecurityContext();
+//        return user.getProfile();
+//    }
 
     @PostMapping()
     public ResponseEntity<?> addProfile(@RequestBody ProfileDto profileDto) {
