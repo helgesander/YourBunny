@@ -28,6 +28,7 @@ public class JwtTokenUtils {
         Map<String, Object> claims = new HashMap<>();
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .filter(authority -> authority.startsWith("ROLE_"))
                 .collect(Collectors.toList());
         claims.put("roles", rolesList);
         Date issuedDate = new Date();
@@ -41,9 +42,9 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public String getUsername(String token) {
-        return getAllClaimsFromToken(token).getSubject();
-    }
+//    public String getUsername(String token) {
+//        return getAllClaimsFromToken(token).getSubject();
+//    }
 
     public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
@@ -53,7 +54,7 @@ public class JwtTokenUtils {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    public Claims getAllClaimsFromToken(String token) {
         try {
             return Jwts.parser()
                     .verifyWith(decodedJwtSecret(secret))
@@ -64,4 +65,5 @@ public class JwtTokenUtils {
             throw new BadJwtTokenException();
         }
     }
+
 }

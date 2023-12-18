@@ -7,7 +7,15 @@
 ```
 ### Prod version
 ```shell
-./mvnw -Dspring.profiles.active=prod
+export ADMIN_USERNAME=*username* \ 
+ADMIN_PASSWORD=*password* \
+ADMIN_EMAIL=*email* \ 
+ADMIN_PHONE=*phone* \ 
+DB_USERNAME=*username* \ 
+DB_PASSWORD=*password* \
+JWT_SECRET=*secret* \
+JWT_LIFETIME=*lifetime*
+&& ./mvnw -Dspring.profiles.active=prod
 ```
 ## Testing
 You can test API with [Postman collection](your-bunny-api.postman_collection.json) or on the endpoint /swagger-ui.html
@@ -32,10 +40,11 @@ You can test API with [Postman collection](your-bunny-api.postman_collection.jso
   - [ ] Fix CRUD operations (update profile, delete profile, )
   - [ ] Fix exception handling
 - [x] Fix roles and roles hierarchy
-- [ ] Fix problem with roles and privileges
-- [ ] Fix exception handling with bad JWT token (PRIORITY)
+- [x] Fix problem with roles and privileges
+- [x] Fix exception handling with bad JWT token (PRIORITY)
 - [ ] Docker file (VERY OPTIONAL)
-- [ ] Fix error with getting user from DB (return null when user is exist)
+- [ ] Fix error with getting user from DB (return null when user is exists)
+- [x] Fix prod and dev profiles' properties
 
 ## Authors 
 [DashaGorodilova](https://github.com/DashaGorodilova)<br>
