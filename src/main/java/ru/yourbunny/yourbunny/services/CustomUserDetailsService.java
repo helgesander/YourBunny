@@ -85,6 +85,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public User createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException, EmailAlreadyExistException {
         User user = userRepository.findByUsername(registrationDto.getUsername()).orElse(null);
+        User emailUser = userRepository.findByEmail(registrationDto.getEmail()).orElse(null);
+        if (emailUser != null ) throw new EmailAlreadyExistException(emailUser.getEmail());
         if (user == null) {
             user = new User();
             user.setUsername(registrationDto.getUsername());

@@ -8,15 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import ru.yourbunny.yourbunny.exceptions.NotFoundException;
 import ru.yourbunny.yourbunny.models.Chat;
 import ru.yourbunny.yourbunny.models.User;
-import ru.yourbunny.yourbunny.repositories.ChatRepository;
 import ru.yourbunny.yourbunny.security.SiteUserDetails;
 import ru.yourbunny.yourbunny.services.ChatService;
 import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

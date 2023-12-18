@@ -1,5 +1,6 @@
 package ru.yourbunny.yourbunny.dtos;
 
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
