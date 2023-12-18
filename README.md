@@ -22,10 +22,10 @@ You can test API with [Postman collection](your-bunny-api.postman_collection.jso
 
 ## TODO:
 
-- [ ] Registration
+- [x] Registration
   - [x] Save user to database
   - [x] Generate and return token with DTO 
-  - [ ] Fix exception handling with some issues
+  - [x] Fix exception handling with some issues
 - [x] Fix obtaining a token for user
 - [ ] Chat API
   - [ ] Implement interaction via Websockets
@@ -34,7 +34,7 @@ You can test API with [Postman collection](your-bunny-api.postman_collection.jso
   - [ ] Fix sending a message, updating message 
   - [ ] Fix exception handling with some issues
 - [ ] Admin Panel API 
-  - [ ] Fix CRUD operations with users in (block an account, delete an account, etc)
+  - [ ] Fix CRUD operations with users and profiles
   - [ ] Fix exception handling with some issues
 - [ ] Profile API
   - [ ] Fix CRUD operations (update profile, delete profile, )
@@ -43,8 +43,11 @@ You can test API with [Postman collection](your-bunny-api.postman_collection.jso
 - [x] Fix problem with roles and privileges
 - [x] Fix exception handling with bad JWT token (PRIORITY)
 - [ ] Docker file (VERY OPTIONAL)
-- [ ] Fix error with getting user from DB (return null when user is exists)
+- [x] Fix error with getting user from DB (return null when user is exists)
 - [x] Fix prod and dev profiles' properties
+- [ ] Fix logging
+- [ ] Uploading avatars 
+- [ ] Fix validator which check good password
 
 ## Authors 
 [DashaGorodilova](https://github.com/DashaGorodilova)<br>

@@ -32,6 +32,16 @@ public class ProfileService {
     }
 
     @Transactional
+    public Profile findById(UUID id) {
+        return profileRepository.findByProfileId(id);
+    }
+
+    @Transactional
+    public Profile findByUserUsername(String username) {
+        return profileRepository.findByUserUsername(username);
+    } // не факт что работает
+
+    @Transactional
     public List<Profile> findAll() {
         return profileRepository.findAll();
     }

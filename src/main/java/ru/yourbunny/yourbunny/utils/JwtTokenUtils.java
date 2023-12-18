@@ -42,10 +42,6 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-//    public String getUsername(String token) {
-//        return getAllClaimsFromToken(token).getSubject();
-//    }
-
     public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
     }
@@ -61,7 +57,7 @@ public class JwtTokenUtils {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (MalformedJwtException e) {
+        } catch (MalformedJwtException e) { // чето тут ругается чертила блять
             throw new BadJwtTokenException();
         }
     }

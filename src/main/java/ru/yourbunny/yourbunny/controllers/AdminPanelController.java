@@ -66,16 +66,8 @@ public class AdminPanelController {
         List<Profile> profiles = profileService.findAll();
         List<ProfileDto> profileDtos = new ArrayList<>();
         for (Profile profile: profiles) {
-            User user = profile.getUser();
-            profileDtos.add(new ProfileDto(user.getUsername(), profile.getAboutMe(),
-                    profile.getAge(), profile.getDateOfBirth(), profile.getGender(),
-                    profile.getHobbies(), profile.getAvatar()));
+            profileDtos.add(new ProfileDto(profile));
         }
         return profileDtos;
     }
-
-//    @GetMapping("/profiles/{username}")
-//    public ProfileDto getProfile(@PathVariable String username) {
-//
-//    }
 }

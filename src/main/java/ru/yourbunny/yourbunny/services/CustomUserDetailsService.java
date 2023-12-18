@@ -57,8 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public User findById(UUID id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.get();
+        Optional<User> user = userRepository.findByUserId(id);
+        return userRepository.findByUserId(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override

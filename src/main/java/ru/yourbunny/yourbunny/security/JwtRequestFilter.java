@@ -32,7 +32,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String requestURI = ((HttpServletRequest) request).getRequestURI();
+        if (authHeader != null && authHeader.startsWith("Bearer ") && !requestURI.contains("/auth/get-token")) {
             jwt = authHeader.substring(7);
             boolean isExpired = false;
             Claims claims = jwtTokenUtils.getAllClaimsFromToken(jwt);
