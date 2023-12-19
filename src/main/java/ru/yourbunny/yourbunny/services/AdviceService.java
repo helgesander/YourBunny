@@ -6,6 +6,7 @@ import  ru.yourbunny.yourbunny.models.Advice;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AdviceService {
@@ -32,5 +33,17 @@ public class AdviceService {
 
     public void deleteAdvice(Long id) {
         adviceRepository.deleteById(id);
+    }
+    public Advice getRandomAdvice() {
+        List<Advice> allAdvice = getAllAdvice();
+
+        if (allAdvice.isEmpty()) {
+            throw new IllegalStateException("Список советов пуст");
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(allAdvice.size());
+
+        return allAdvice.get(randomIndex);
     }
 }
