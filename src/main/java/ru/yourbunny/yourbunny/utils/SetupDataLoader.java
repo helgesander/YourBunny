@@ -14,11 +14,8 @@ import ru.yourbunny.yourbunny.repositories.PrivilegeRepository;
 import ru.yourbunny.yourbunny.repositories.RoleRepository;
 import ru.yourbunny.yourbunny.repositories.UserRepository;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -39,6 +36,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Value("${admin.phone}")
     private String adminPhone;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -67,7 +65,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             user.setRoles(Arrays.asList(adminRole));
             userRepository.save(user);
         }
-
     }
     @Override
     public boolean supportsAsyncExecution() {
