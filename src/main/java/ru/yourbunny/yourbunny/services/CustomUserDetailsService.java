@@ -57,7 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public User findById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        Optional<User> user = userRepository.findByUserId(id);
+        return userRepository.findByUserId(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
@@ -84,12 +85,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public User createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException, EmailAlreadyExistException {
         User user = userRepository.findByUsername(registrationDto.getUsername()).orElse(null);
+        User emailUser = userRepository.findByEmail(registrationDto.getEmail()).orElse(null);
+        if (emailUser != null ) throw new EmailAlreadyExistException(emailUser.getEmail());
         if (user == null) {
             user = new User();
             user.setUsername(registrationDto.getUsername());
             user.setEmail(registrationDto.getEmail());
             user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
             user.setRoles(List.of(roleService.findByName("ROLE_USER")));
+            user.setPhone(registrationDto.getPhone());
             user.setEnabled(true);
             userRepository.save(user);
         } else throw new UserAlreadyExistException(registrationDto.getUsername());

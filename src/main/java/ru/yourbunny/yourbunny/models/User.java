@@ -3,6 +3,8 @@ package ru.yourbunny.yourbunny.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -24,8 +26,10 @@ public class User {
     @Column (name = "password", nullable = false)
     private String password;
     @Column(name = "email", unique = true, nullable = false)
+    @Email
     private String email;
     @Column(name = "phone", unique = true, nullable = false)
+    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$")
     private String phone;
     @Column(name = "enabled")
     private boolean isEnabled;
@@ -39,5 +43,6 @@ public class User {
                     name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "role_id"))
+    @JsonIgnore
     private List<Role> roles;
 }

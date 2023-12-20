@@ -32,6 +32,9 @@ public class Profile {
     @NotBlank
     private Date dateOfBirth;
 
+    @Column(name = "place_of_living")
+    private String placeOfLiving;
+
     @Column(name = "gender")
     @NotBlank
     private String gender;
@@ -40,6 +43,7 @@ public class Profile {
     private String hobbies;
 
     @Column (name = "avatar")
+    @Lob
     private byte[] avatar;
 
     @OneToOne(fetch = FetchType.LAZY)
