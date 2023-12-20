@@ -11,6 +11,7 @@ import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
 
 import java.util.List;
 
+
 @RestControllerAdvice
 public class GlobalAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

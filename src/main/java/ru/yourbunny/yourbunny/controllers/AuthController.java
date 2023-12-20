@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,7 @@ import ru.yourbunny.yourbunny.dtos.RegistrationDto;
 import ru.yourbunny.yourbunny.services.AuthService;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Tag(name = "API авторизации", description = "Получение токена JWT при входе и решистрации на ресурсе")

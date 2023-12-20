@@ -15,7 +15,7 @@ public class Chat {
     @Id
     @GeneratedValue (strategy = GenerationType.UUID)
     @Column(name = "chat_id")
-    private String id;
+    private UUID id;
     @Column(name = "first_user_id", nullable = false)
     private UUID firstUserId;
     @Column(name = "second_user_id", nullable = false)

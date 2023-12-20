@@ -7,16 +7,23 @@
 	},
 	"item": [
 		{
-			"name": "get token for user",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "/auth/get-token",
 			"request": {
-				"method": "GET",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJSRUFEX1BSSVZJTEVHRSIsIlJPTEVfVVNFUiJdLCJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzAyNzY5NTA3LCJpYXQiOjE3MDI3Njc3MDd9.OoxvoeR8pMsc4nXLp_-j5_dCU-mWjQKc44pcrstopEqwBtUa8PlZsswFKJjFeU3-Gh10VmUd7xm9CIfD55WB8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"russian_sigma\",\r\n    \"password\": \"kamen\"\r\n}",
+					"raw": "{\r\n    \"username\": \"russian_sigma\",\r\n    \"password\": \"kamen...\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -24,12 +31,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/auth/get-token",
+					"raw": "http://localhost:80/auth/get-token",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "80",
 					"path": [
 						"auth",
 						"get-token"
@@ -37,32 +44,398 @@
 				},
 				"description": "Return token if user is exist in database"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "get token for admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "https://api.adviceslip.com/advice/search/fidelity",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:12345/auth/get-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "12345",
+							"path": [
+								"auth",
+								"get-token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 16 Dec 2023 23:03:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJSRUFEX1BSSVZJTEVHRSIsIlJPTEVfVVNFUiJdLCJzdWIiOiJydXNzaWFuX3NpZ21hIiwiZXhwIjoxNzAyNzY5NjI1LCJpYXQiOjE3MDI3Njc4MjV9._DoT1NOxWVrPAuFCY0FjH4JcWd_UHaJg47yl3Y62Bem6HWLPKMECsTjCmuw6hGUXJbtSpxh6km4cLGm982wO4Q\"\n}"
+				}
+			]
 		},
 		{
-			"name": "registration new user",
+			"name": "/auth/registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<div>\r",
+							"    <h3>Error Details</h3>\r",
+							"    <p>Status: {{response.status}}</p>\r",
+							"    <p>Cause: {{response.cause}}</p>\r",
+							"    <p>Message: {{response.message}}</p>\r",
+							"    <p>Timestamp: {{response.timestamp}}</p>\r",
+							"</div>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return {response: pm.response.json()};\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\",\r\n    \"confirmPassword\": \"test\",\r\n    \"email\": \"test@bk.ru\",\r\n    \"phone\": \"87777777777\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:80/auth/registration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "80",
+					"path": [
+						"auth",
+						"registration"
+					]
+				},
+				"description": "Registration new user"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "registration test user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"test\",\r\n    \"confirmPassword\": \"test\",\r\n    \"email\": \"test@bk.ru\",\r\n    \"phone\": \"87777777777\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:80/auth/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"auth",
+								"registration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 17 Dec 2023 20:55:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"f286ff76-cfe3-4ffd-a875-cf6d1e5e14f1\",\n    \"username\": \"test\",\n    \"email\": \"test@bk.ru\",\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJSRUFEX1BSSVZJTEVHRSIsIlJPTEVfVVNFUiJdLCJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzAyODQ4MzE5LCJpYXQiOjE3MDI4NDY1MTl9.SVHWIyBWtIzlHYqSEe5jLn_s5cYIJ2Ya9eOYkqDbtapTSocZHr5zjO2LRPkDG5xB-tKp0XskohpKiVwpbEUj3g\"\n}"
+				}
+			]
 		},
 		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "admin panell",
+			"name": "/admin/users/{user_id}",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"description": "Work with admin panel (available for admin role)"
 			},
 			"response": []
+		},
+		{
+			"name": "/api/chat",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:80/api/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "80",
+					"path": [
+						"api",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/home",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "yJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJERUxFVEVfUFJJVklMRUdFIiwiUkVBRF9QUklWSUxFR0UiLCJST0xFX0FETUlOIiwiV1JJVEVfUFJJVklMRUdFIl0sInN1YiI6InJ1c3NpYW5fc2lnbWEiLCJleHAiOjE3MDI4ODY4MDAsImlhdCI6MTcwMjg4NTAwMH0.EsOFqHPdJaQTHg-B4RNKLDgGAUabRM6ZOmG8IOjYGub-I4szPN3aTPMCO6scZFnmRdBlm8SWxjQRpsxHYjJSTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:80/home",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "80",
+					"path": [
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/swagger-ui.html",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "swagger",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:80/swagger-ui.html",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"swagger-ui.html"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Disposition",
+							"value": "inline;filename=f.txt"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 16 Dec 2023 23:41:55 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2023-12-16T23:41:55.310+00:00\",\n    \"status\": 403,\n    \"error\": \"Forbidden\",\n    \"message\": \"Forbidden\",\n    \"path\": \"/swagger-ui.html\"\n}"
+				}
+			]
 		}
 	]
 }

@@ -8,19 +8,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.yourbunny.yourbunny.exceptions.UserNotFoundException;
 import ru.yourbunny.yourbunny.models.Chat;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.security.SiteUserDetails;
 import ru.yourbunny.yourbunny.services.ChatService;
 import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/chat")
 @Tag(name = "API чатов", description = "Диалог с другими пользователями")
 public class ChatController {
+    @Autowired
     private ChatService chatService;
+    @Autowired
     private CustomUserDetailsService userService;
     @GetMapping("/{chat_id}")
     public Chat getChat(@PathVariable UUID chat_id) {
@@ -31,9 +35,9 @@ public class ChatController {
     public ResponseEntity<?> addChat(@RequestParam String username) {
         Chat chat = new Chat();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SiteUserDetails siteUserDetails = (SiteUserDetails)authentication.getPrincipal();
-        User currentUser = siteUserDetails.getUser();
-        User secondUser = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        String usernameOfCurrentUser = (String) authentication.getPrincipal();
+        User currentUser = userService.findByUsername(usernameOfCurrentUser).orElseThrow(() -> new UserNotFoundException(usernameOfCurrentUser));
+        User secondUser = userService.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
         chat.setFirstUserId(currentUser.getUserId());
         chat.setSecondUserId(secondUser.getUserId());
         chatService.save(chat);

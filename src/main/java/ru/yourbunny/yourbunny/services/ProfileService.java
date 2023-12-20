@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Service
 public class ProfileService {
+    @Autowired
     private ProfileRepository profileRepository;
 
     @Transactional
@@ -39,7 +40,7 @@ public class ProfileService {
     @Transactional
     public Profile findByUserUsername(String username) {
         return profileRepository.findByUserUsername(username);
-    } // не факт что работает
+    }
 
     @Transactional
     public List<Profile> findAll() {
