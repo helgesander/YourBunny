@@ -25,11 +25,7 @@ public class AdminPanelService {
         if (!registrationDto.getPassword().equals(registrationDto.getConfirmPassword()))
             return new ResponseEntity<>(new ApplicationErrorResponse(HttpStatus.BAD_REQUEST.value(), "Passwords not match"), HttpStatus.BAD_REQUEST);
         User user = null;
-        try {
-            user = userService.createNewUser(registrationDto);
-        } catch (RoleNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        user = userService.createNewUser(registrationDto);
         log.info("Create user by admin with username '{}' and role {}", request.getRemoteAddr(), role);
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), userService.getAuthorities(Arrays.asList(roleService.findByName("ROLE_" + role))));
         return ResponseEntity.ok(new UserFromAdminDto(user.getUserId(), user.getUsername(), user.getPassword()));

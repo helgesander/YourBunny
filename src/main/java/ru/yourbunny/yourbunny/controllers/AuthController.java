@@ -4,16 +4,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yourbunny.yourbunny.dtos.JwtRequest;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
 import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
 import ru.yourbunny.yourbunny.services.AuthService;
-import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
 @RestController
 @Validated
