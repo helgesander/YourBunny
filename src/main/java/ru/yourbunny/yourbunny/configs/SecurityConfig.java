@@ -71,9 +71,10 @@ public class SecurityConfig {
                 ).authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/users/**", "/home").authenticated()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/activate/*").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/profiles/**").hasRole("USER")
-//                        .requestMatchers("/swagger-ui.html").hasRole("DEVELOPER")
+                        .requestMatchers("/swagger-ui.html").hasRole("DEVELOPER")
                         .anyRequest()
                         .permitAll()
                 ).sessionManagement(session -> session

@@ -66,6 +66,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             userRepository.save(user);
         }
     }
+
     @Override
     public boolean supportsAsyncExecution() {
         return ApplicationListener.super.supportsAsyncExecution();

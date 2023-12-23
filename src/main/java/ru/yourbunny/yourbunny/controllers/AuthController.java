@@ -4,14 +4,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yourbunny.yourbunny.dtos.JwtRequest;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
-import ru.yourbunny.yourbunny.exceptions.UserNotFoundException;
-import ru.yourbunny.yourbunny.models.User;
+import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
 import ru.yourbunny.yourbunny.services.AuthService;
 import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
@@ -23,8 +23,6 @@ import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 public class AuthController {
     @Autowired
     private final AuthService authService;
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/get-token")
     public ResponseEntity<?> createsAuthToken(@RequestBody JwtRequest authRequest, HttpServletRequest request) {
@@ -36,8 +34,13 @@ public class AuthController {
         return authService.createUser(user, request);
     }
 
-//    @PostMapping("/activate/{code}")
-//    public ResponseEntity<?> activateUser(@PathVariable int code) {
-//
-//    }
+    @GetMapping("/activate/{code}")
+    public ResponseEntity<?> activate(@PathVariable String code) {
+        boolean isActivated = authService.activateUser(code);
+
+        if (!isActivated) {
+            return new ResponseEntity<>(new ApplicationErrorResponse(HttpStatus.BAD_REQUEST.value(), "Не корректный код активации"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Пользователь успешно активирован");
+    }
 }

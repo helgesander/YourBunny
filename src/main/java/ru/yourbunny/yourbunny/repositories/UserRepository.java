@@ -13,5 +13,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUserId(UUID uuid);
 
     User findByActivationCode(String code);
-
 }

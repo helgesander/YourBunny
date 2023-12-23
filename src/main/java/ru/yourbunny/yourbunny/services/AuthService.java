@@ -18,6 +18,7 @@ import ru.yourbunny.yourbunny.dtos.NewUserDto;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
 import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
 import ru.yourbunny.yourbunny.models.User;
+import ru.yourbunny.yourbunny.repositories.UserRepository;
 import ru.yourbunny.yourbunny.utils.JwtTokenUtils;
 
 import javax.management.relation.RoleNotFoundException;
@@ -31,6 +32,7 @@ public class AuthService {
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
     private final RoleService roleService;
+    private final UserRepository userRepo;
 
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest, HttpServletRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -54,5 +56,17 @@ public class AuthService {
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), userService.getAuthorities(Arrays.asList(roleService.findByName("ROLE_USER"))));
         String token = jwtTokenUtils.generateToken(userDetails);
         return ResponseEntity.ok(new NewUserDto(user.getUserId(), user.getUsername(), user.getEmail(), token));
+    }
+
+    public boolean activateUser(String code) {
+        User user = userRepo.findByActivationCode(code);
+        if (user == null) {
+            return false;
+        }
+        user.setActivationCode(null);
+
+        userRepo.save(user);
+
+        return true;
     }
 }
