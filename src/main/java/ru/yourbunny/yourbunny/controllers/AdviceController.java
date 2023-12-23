@@ -9,7 +9,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/advice")
 @Tag(name = "Советы", description = "Сервис по подбору советов при знакомстве")
-
 public class AdviceController {
 
     private final AdviceRepository adviceRepository;
@@ -21,7 +20,7 @@ public class AdviceController {
     public List<Advice> getAllAdvice() {
         return adviceRepository.findAll();
     }
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Advice getAdviceById(@PathVariable Long id) {
         return adviceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Совет с ID " + id + " не найден"));

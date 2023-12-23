@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
+import ru.yourbunny.yourbunny.dtos.CreateUserDto;
+import ru.yourbunny.yourbunny.dtos.RegistrationDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +35,8 @@ public class User {
     private String phone;
     @Column(name = "enabled")
     private boolean isEnabled;
+    @Column(name = "activation_code")
+    private String activationCode;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     @JsonIgnore
     private Profile profile;
@@ -45,4 +49,18 @@ public class User {
                     name = "role_id", referencedColumnName = "role_id"))
     @JsonIgnore
     private List<Role> roles;
+
+    public User(String username, String password, String email, String phone) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(RegistrationDto userDto) {
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.email = userDto.getEmail();
+        this.phone = userDto.getPhone();
+    }
 }

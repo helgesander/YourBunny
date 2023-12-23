@@ -20,6 +20,7 @@ import ru.yourbunny.yourbunny.exceptions.ApplicationErrorResponse;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.utils.JwtTokenUtils;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.Arrays;
 
 @Service
@@ -29,7 +30,6 @@ public class AuthService {
     private final CustomUserDetailsService userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest, HttpServletRequest request) {
@@ -44,7 +44,12 @@ public class AuthService {
     public ResponseEntity<?> createUser(@RequestBody RegistrationDto registrationDto, HttpServletRequest request) {
         if (!registrationDto.getPassword().equals(registrationDto.getConfirmPassword()))
             return new ResponseEntity<>(new ApplicationErrorResponse(HttpStatus.BAD_REQUEST.value(), "Passwords not match"), HttpStatus.BAD_REQUEST);
-        User user = userService.createNewUser(registrationDto);
+        User user = null; http://localhost:80/auth/activate?
+        try {
+            user = userService.createNewUser(registrationDto);
+        } catch (RoleNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         log.info("Client from {}: Create user with username '{}'", request.getRemoteAddr(),registrationDto.getUsername());
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), userService.getAuthorities(Arrays.asList(roleService.findByName("ROLE_USER"))));
         String token = jwtTokenUtils.generateToken(userDetails);

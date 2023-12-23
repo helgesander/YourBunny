@@ -48,7 +48,7 @@ You can test API with [Postman collection](your-bunny-api.postman_collection.jso
 - [ ] Fix logging
 - [ ] Uploading avatars 
 - [ ] Fix validator which check good password, email and phone number
-- [ ] Fix finding a place to meat nearby
+- [ ] Fix advices
 
 ## Authors 
 [DashaGorodilova](https://github.com/DashaGorodilova)<br>

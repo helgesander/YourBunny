@@ -1,19 +1,18 @@
 package ru.yourbunny.yourbunny.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yourbunny.yourbunny.dtos.ProfileDto;
-import ru.yourbunny.yourbunny.dtos.UserDto;
+import ru.yourbunny.yourbunny.dtos.*;
 import ru.yourbunny.yourbunny.models.Profile;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.repositories.RoleRepository;
-import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
-import ru.yourbunny.yourbunny.services.ProfileService;
-import ru.yourbunny.yourbunny.services.RoleService;
+import ru.yourbunny.yourbunny.services.*;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +26,8 @@ public class AdminPanelController {
     private CustomUserDetailsService userService;
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    private AdminPanelService adminPanelService;
 
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
@@ -37,6 +38,7 @@ public class AdminPanelController {
         }
         return userDtos;
     }
+    // CRUD - Create (Post), Read - Get, Update - PATCH/PUT, Delete - DELETE
 
     @GetMapping("/users/{user_id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable UUID user_id) {
@@ -57,7 +59,6 @@ public class AdminPanelController {
     }
     @PutMapping("/users/{userId}")
     public ResponseEntity<?> changeUserData(@RequestBody UserDto user, @PathVariable UUID userId) {
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -69,5 +70,10 @@ public class AdminPanelController {
             profileDtos.add(new ProfileDto(profile));
         }
         return profileDtos;
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<?> createUser(@RequestBody RegistrationDto userDto, @RequestParam String role, HttpServletRequest request) {
+        return adminPanelService.createUserByAdmin(userDto, role, request);
     }
 }

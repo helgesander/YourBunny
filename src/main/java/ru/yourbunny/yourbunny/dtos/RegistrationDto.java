@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class RegistrationDto {
     private String username;
-    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]|[_]).{8,}$",
             message = "Password must contain one special character, 2 digits, 2 uppercase letters")
     private String password;
     private String confirmPassword;

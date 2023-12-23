@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/profiles/**").hasRole("USER")
-                        .requestMatchers("/swagger-ui.html").hasRole("DEVELOPER")
+//                        .requestMatchers("/swagger-ui.html").hasRole("DEVELOPER")
                         .anyRequest()
                         .permitAll()
                 ).sessionManagement(session -> session

@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yourbunny.yourbunny.dtos.JwtRequest;
 import ru.yourbunny.yourbunny.dtos.RegistrationDto;
+import ru.yourbunny.yourbunny.exceptions.UserNotFoundException;
+import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.services.AuthService;
+import ru.yourbunny.yourbunny.services.CustomUserDetailsService;
 
 @RestController
 @Validated
@@ -23,6 +23,8 @@ import ru.yourbunny.yourbunny.services.AuthService;
 public class AuthController {
     @Autowired
     private final AuthService authService;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/get-token")
     public ResponseEntity<?> createsAuthToken(@RequestBody JwtRequest authRequest, HttpServletRequest request) {
@@ -33,4 +35,9 @@ public class AuthController {
     public ResponseEntity<?> createUser(@Valid @RequestBody RegistrationDto user, HttpServletRequest request) {
         return authService.createUser(user, request);
     }
+
+//    @PostMapping("/activate/{code}")
+//    public ResponseEntity<?> activateUser(@PathVariable int code) {
+//
+//    }
 }

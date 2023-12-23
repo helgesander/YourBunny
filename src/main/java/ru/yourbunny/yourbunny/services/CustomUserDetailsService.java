@@ -1,9 +1,11 @@
 package ru.yourbunny.yourbunny.services;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +23,11 @@ import ru.yourbunny.yourbunny.models.Role;
 import ru.yourbunny.yourbunny.models.User;
 import ru.yourbunny.yourbunny.repositories.UserRepository;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailSenderService mailSender;
 
     @Transactional
     public List<User> findAll() {
@@ -82,8 +89,31 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
+    private void sendMessage(User user) {
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to Sweater. Please, visit next link: http://%s/activate/%s",
+                    user.getUsername(),
+                    "localhost",
+                    user.getActivationCode()
+            );
+
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
+    }
+
     @Transactional
-    public User createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException, EmailAlreadyExistException {
+    public User createNewUser(RegistrationDto registrationDto) throws UserAlreadyExistException, EmailAlreadyExistException, RoleNotFoundException {
+        return getUser(registrationDto, "USER");
+    }
+
+    @Transactional
+    public User createNewUser(RegistrationDto registrationDto, String role) throws RoleNotFoundException {
+        return getUser(registrationDto, role);
+    }
+
+    private User getUser(RegistrationDto registrationDto, String role) throws RoleNotFoundException {
         User user = userRepository.findByUsername(registrationDto.getUsername()).orElse(null);
         User emailUser = userRepository.findByEmail(registrationDto.getEmail()).orElse(null);
         if (emailUser != null ) throw new EmailAlreadyExistException(emailUser.getEmail());
@@ -92,7 +122,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setUsername(registrationDto.getUsername());
             user.setEmail(registrationDto.getEmail());
             user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-            user.setRoles(List.of(roleService.findByName("ROLE_USER")));
+            List<Role> roleList = List.of(roleService.findByName("ROLE_" + role));
+            if (roleList.isEmpty()) throw new RoleNotFoundException( );
+            user.setRoles(List.of(roleService.findByName("ROLE_" + role)));
             user.setPhone(registrationDto.getPhone());
             user.setEnabled(true);
             userRepository.save(user);
