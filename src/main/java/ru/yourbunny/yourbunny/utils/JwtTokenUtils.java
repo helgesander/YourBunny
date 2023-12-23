@@ -57,7 +57,7 @@ public class JwtTokenUtils {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (MalformedJwtException e) { // чето тут ругается чертила блять
+        } catch (MalformedJwtException e) {
             throw new BadJwtTokenException();
         }
     }

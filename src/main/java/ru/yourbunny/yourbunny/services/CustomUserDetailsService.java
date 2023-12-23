@@ -3,6 +3,7 @@ package ru.yourbunny.yourbunny.services;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,6 +35,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailSender mailSender;
 
     @Transactional
     public List<User> findAll() {
@@ -95,9 +98,33 @@ public class CustomUserDetailsService implements UserDetailsService {
             user.setRoles(List.of(roleService.findByName("ROLE_USER")));
             user.setPhone(registrationDto.getPhone());
             user.setEnabled(true);
+            user.setActivationCode(UUID.randomUUID().toString());
             userRepository.save(user);
+
+            if (!StringUtils.isEmpty(user.getEmail())) {
+                String message = String.format(
+                        "Hello, %s! \n" +
+                                "Welcome to YourBunny. Please, visit next link: http://localhost:12345/auth/activate/%s",
+                        user.getUsername(),
+                        user.getActivationCode()
+                );
+
+                mailSender.send(user.getEmail(), "Activation code", message);
+            }
         } else throw new UserAlreadyExistException(registrationDto.getUsername());
         return user;
+    }
+
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+        if (user == null) {
+            return false;
+        }
+        user.setActivationCode(null);
+
+        userRepository.save(user);
+
+        return true;
     }
 
     @Transactional

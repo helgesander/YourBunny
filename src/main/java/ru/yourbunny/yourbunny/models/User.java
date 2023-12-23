@@ -28,6 +28,7 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     @Email
     private String email;
+    private String activationCode;
     @Column(name = "phone", unique = true, nullable = false)
     @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$")
     private String phone;
@@ -45,4 +46,20 @@ public class User {
                     name = "role_id", referencedColumnName = "role_id"))
     @JsonIgnore
     private List<Role> roles;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }
